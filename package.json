@@ -4,7 +4,6 @@
   "description": "",
   "main": "proxy.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
     "watch": "webpack --watch"
   },
@@ -14,7 +13,6 @@
     "chrome-remote-interface": "^0.25.2",
     "commander": "^2.11.0",
     "eventemitter2": "^4.1.2",
-    "font-awesome": "^4.7.0",
     "request": "^2.83.0",
     "request-promise-native": "^1.0.5"
   },
@@ -28,6 +26,7 @@
     "style-loader": "^0.19.0",
     "url-loader": "^0.6.2",
     "vue": "^2.5.8",
-    "webpack": "^3.8.1"
+    "webpack": "^3.8.1",
+    "font-awesome": "^4.7.0"
   }
 }
