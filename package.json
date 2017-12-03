@@ -1,0 +1,33 @@
+{
+  "name": "dfpm",
+  "version": "1.0.0",
+  "description": "",
+  "main": "proxy.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "watch": "webpack --watch"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "chrome-remote-interface": "^0.25.2",
+    "commander": "^2.11.0",
+    "eventemitter2": "^4.1.2",
+    "font-awesome": "^4.7.0",
+    "request": "^2.83.0",
+    "request-promise-native": "^1.0.5"
+  },
+  "devDependencies": {
+    "bootstrap": "^4.0.0-beta.2",
+    "css-loader": "^0.28.7",
+    "file-loader": "^1.1.5",
+    "jquery": "^3.2.1",
+    "popper.js": "^1.12.9",
+    "raw-loader": "^0.5.1",
+    "style-loader": "^0.19.0",
+    "url-loader": "^0.6.2",
+    "vue": "^2.5.8",
+    "webpack": "^3.8.1"
+  }
+}

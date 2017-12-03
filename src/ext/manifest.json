@@ -1,0 +1,19 @@
+{
+    "manifest_version": 2,
+    "name": "DFPM",
+    "short_name": "DFPM",
+    "version": "1.13",
+    "description": "Devtools extension which reports browser fingerprinting",
+    "content_scripts": [{
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_start",
+      "all_frames": true
+    }],
+    "permissions":["tabs","<all_urls>"],
+    "devtools_page": "dfpm_devtools.html",
+    "background": {
+      "scripts": ["background.js"]
+    },
+    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+  }

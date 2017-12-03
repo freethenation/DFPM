@@ -1,0 +1,47 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../../../favicon.ico">
+
+    <title>Grid Template for Bootstrap</title>
+    <script src="dfpm_panel.js"></script>
+  </head>
+
+  <body>
+    <div class="container-fluid height-100-percent">
+      <div id="app" class="row height-100-percent">
+        <div id="summary-panel" class="col-4 padding-0">
+            <div class="list-group">
+              <div v-bind:id="'category-'+cat.category" v-for="cat in categories" :class="['list-group-item','align-items-start','flex-column',cat.level=='info'?'':'list-group-item-'+cat.level]">
+                <h5 class="mb-1"><i v-bind:class="['fa', cat.icon]" class="fa fa-font" aria-hidden="true"></i> {{cat.title}}</h5>
+                <p class="mb-1">{{cat.desc}} <a target="_blank" v-bind:href="cat.moreInfo">more info</a></p>
+              </div>
+            </div>
+        </div>
+        <div class="col-8 padding-0">
+          <div class="container-fluid" id="log-panel">
+            <div id="options-bar" class="row">
+              <div class="col12">
+                <button type="submit" class="btn btn-light btn-sm" v-on:click="clearLogs()">Clear Logs</button>
+                <label class="form-check-label form-control-sm"><input v-model="showInfo" class="form-check-input" type="checkbox">Info</label>
+                <label class="form-check-label form-control-sm"><input v-model="showWarn" class="form-check-input" type="checkbox">Warnings</label>
+                <label class="form-check-label form-control-sm"><input v-model="showDanger" class="form-check-input" type="checkbox">Danger</label>
+                <button type="submit" class="btn btn-light btn-sm" v-on:click="resetFilters()">Reset Filters</button>
+              </div>
+            </div>
+            <div id="log-lines" class="row">
+              <ul class="list-group">
+                <log-line v-for="e in filteredEvents" v-bind:event="e"></log-line>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> <!-- /container -->
+  </body>
+</html>
