@@ -21,7 +21,7 @@
 #summary-panel {
     background-color: #f8f9fa;
     border-right: black solid 1px;
-    color: #6e6e6e;
+    /*color: #6e6e6e;*/
     overflow-y: auto;
 }
 #options-bar {

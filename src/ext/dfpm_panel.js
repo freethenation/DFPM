@@ -6,14 +6,22 @@ import './dfpm_panel.css'
 //actual js imports
 import {callJsonRpc, addJsonRpcListener} from './messaging'
 import 'bootstrap'
-import {Model} from './model'
+import {Model, levelToInt} from './model'
 import Vue from 'vue/dist/vue.js'
 
+
+function levelToClass(level){
+    return ({
+        'warning':'list-group-item-warning',
+        'null':'text-muted',
+        'danger':'list-group-item-danger',
+    })[level] || ''
+}
 
 var DOMAIN_REGEX = /.*\:\/\/?([^\/]+)/
 Vue.component('log-line', {
     props: ['event'],
-    template: `<li class="log-line" v-bind:class="['list-group-item',event.level=='info'?'':'list-group-item-'+event.level]">
+    template: `<li class="log-line" v-bind:class=" ['list-group-item', levelToClass(event.level)]">
       <b>{{event.category}}</b> {{event.method}} {{event.path}} <a target="_blank" :href="event.url">{{shortUrl}}</a>
     </li>`,
     computed: {
@@ -25,6 +33,9 @@ Vue.component('log-line', {
             return url[1].toLowerCase()
         }
     },
+    methods: {
+        levelToClass:levelToClass,
+    }
 })
 
 
@@ -62,20 +73,24 @@ callJsonRpc(null, 'registerDevtoolsTab', chrome.devtools.inspectedWindow.tabId)
             },
             methods: {
                 updateCategories: function(event){
-                    if(!event || event.level === "info") return;
+                    if(!event) return;
                     var category = this.categories.find((c)=>c.category==event.category)
-                    if(!category || category.level === "danger") return;
-                    category.level = event.level;
+                    var eventLevel = levelToInt(event.level)
+                    var categoryLevel = levelToInt(category.level)
+                    if(eventLevel > categoryLevel)
+                        debugger
+                        category.level = event.level
                 },
                 clearLogs: function(){
                     this.events = []
-                    this.categories.forEach(c=>c.level="info")
+                    this.categories.forEach(c=>c.level=null)
                 },
                 resetFilters: function(){
                     this.showInfo = true;
                     this.showWarn = true;
                     this.showDanger = true;
                 },
+                levelToClass:levelToClass,
             }
         })
         //listen for new events

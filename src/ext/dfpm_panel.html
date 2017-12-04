@@ -17,7 +17,7 @@
       <div id="app" class="row height-100-percent">
         <div id="summary-panel" class="col-4 padding-0">
             <div class="list-group">
-              <div v-bind:id="'category-'+cat.category" v-for="cat in categories" :class="['list-group-item','align-items-start','flex-column',cat.level=='info'?'':'list-group-item-'+cat.level]">
+              <div v-bind:id="'category-'+cat.category" v-for="cat in categories" :class="['list-group-item','align-items-start','flex-column',levelToClass(cat.level)]">
                 <h5 class="mb-1"><i v-bind:class="['fa', cat.icon]" class="fa fa-font" aria-hidden="true"></i> {{cat.title}}</h5>
                 <p class="mb-1">{{cat.desc}} <a target="_blank" v-bind:href="cat.moreInfo">more info</a></p>
               </div>

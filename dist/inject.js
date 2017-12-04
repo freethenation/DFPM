@@ -1393,7 +1393,7 @@ function logger(self, emitter){
                 emitter.emit('event', {
                     method: 'get',
                     path: `self.screen.${propertyKey}`,
-                    level: 'warning',
+                    level: 'info',
                     category: 'screen',
                 })
                 return Reflect.get(target, propertyKey, target)
