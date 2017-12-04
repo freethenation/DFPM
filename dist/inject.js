@@ -1176,6 +1176,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 function logger(self, emitter){
     if(self.navigator){
+        var origNavigator = self.navigator
         let proxy = new Proxy(self.navigator, {
             get: function(target, propertyKey, receiver){
                 emitter.emit('event', {
@@ -1184,8 +1185,12 @@ function logger(self, emitter){
                     level: 'info',
                     category: 'navigator',
                 })
-                return Reflect.get(target, propertyKey, target)
-            }
+                var ret = origNavigator[propertyKey]
+                if(typeof(ret)=='function'){
+                    ret = ret.bind(origNavigator)
+                }
+                return ret;
+            },
         });
         Reflect.defineProperty(self, 'navigator', {
             get:function(){ return proxy },
