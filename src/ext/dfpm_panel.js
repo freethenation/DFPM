@@ -44,7 +44,6 @@ var vm = null;
 function contentPageEvent(evt, tabId){
     if(currentTabId !== tabId) return; //Skip if the message is not ment for me
     vm.events.push(evt)
-    console.log('dfpm_panel',evt)
 }
 
 callJsonRpc(null, 'registerDevtoolsTab', chrome.devtools.inspectedWindow.tabId)

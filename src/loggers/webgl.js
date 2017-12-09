@@ -27,6 +27,7 @@ export function logger(self, emitter){
         Reflect.ownKeys(self.WebGL2RenderingContext.prototype).forEach((key)=>{
             if(typeof(key)==="symbol") return; //ignore symbols
             if(key==="getParameter") return; //implemented below for better logging
+            if(key==="getExtension") return; //implemented below for better logging
             try{
                 var val = self.WebGL2RenderingContext.prototype[key]
                 var type = typeof(val)
@@ -47,12 +48,26 @@ export function logger(self, emitter){
                 return Reflect.apply(target, thisArgument, args)
             }
         })
+        self.WebGL2RenderingContext.prototype.getExtension = new Proxy(self.WebGL2RenderingContext.prototype.getExtension, {
+            apply:function(target, thisArgument, args){
+                var level = "info"
+                if(args[0]=="WEBGL_debug_renderer_info") level="danger";
+                emitter.emit('event', {
+                    method: 'apply',
+                    level:level,
+                    category:'webgl',
+                    path: `self.WebGL2RenderingContext.prototype.getExtension(${args[0]})`
+                })
+                return Reflect.apply(target, thisArgument, args)
+            }
+        })
     }
     if(self.WebGLRenderingContext){
         let reverseParamDict = {}
         Reflect.ownKeys(self.WebGLRenderingContext.prototype).forEach((key)=>{
             if(typeof(key)==="symbol") return; //ignore symbols
             if(key==="getParameter") return; //implemented below for better logging
+            if(key==="getExtension") return; //implemented below for better logging
             try{
                 var val = self.WebGLRenderingContext.prototype[key]
                 var type = typeof(val)
@@ -69,6 +84,19 @@ export function logger(self, emitter){
                     level:'warning',
                     category:'webgl',
                     path: `self.WebGLRenderingContext.prototype.getParameter(${reverseParamDict[args[0]]||args[0]})`
+                })
+                return Reflect.apply(target, thisArgument, args)
+            }
+        })
+        self.WebGLRenderingContext.prototype.getExtension = new Proxy(self.WebGLRenderingContext.prototype.getExtension, {
+            apply:function(target, thisArgument, args){
+                var level = "info"
+                if(args[0]=="WEBGL_debug_renderer_info") level="danger";
+                emitter.emit('event', {
+                    method: 'apply',
+                    level:level,
+                    category:'webgl',
+                    path: `self.WebGLRenderingContext.prototype.getExtension(${args[0]})`
                 })
                 return Reflect.apply(target, thisArgument, args)
             }
