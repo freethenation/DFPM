@@ -23,13 +23,13 @@ If we run DFPM on their [mobile marketing site](https://www.dropbox.com) with no
 
 ![usage example screenshot](https://raw.githubusercontent.com/freethenation/DFPM/master/docs/example_db_marketing.png)
 
-No one is scraping or hacking Dropboxes marketing site so hopefully the fingerprinting is just an oversite :(
+No one is scraping or hacking Dropboxe's marketing site so hopefully the fingerprinting is just an oversite :(
 
 If we run DFPM on their [login page](https://www.dropbox.com/login) they initially run no fingerprinting
 
 ![usage example screenshot](https://raw.githubusercontent.com/freethenation/DFPM/master/docs/example_db_login_before_attempt.png)
 
-If we attempt to login and fail the fingerprint us with [canvas](https://browserleaks.com/canvas) and [fonts](https://browserleaks.com/fonts)
+If we attempt to login and fail they fingerprint us with [canvas](https://browserleaks.com/canvas) and [fonts](https://browserleaks.com/fonts)
 
 ![usage example screenshot](https://raw.githubusercontent.com/freethenation/DFPM/master/docs/example_db_login_after_attempt.png)
 
