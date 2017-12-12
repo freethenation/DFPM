@@ -76,9 +76,9 @@ callJsonRpc(null, 'registerDevtoolsTab', chrome.devtools.inspectedWindow.tabId)
                     var category = this.categories.find((c)=>c.category==event.category)
                     var eventLevel = levelToInt(event.level)
                     var categoryLevel = levelToInt(category.level)
-                    if(eventLevel > categoryLevel)
-                        debugger
+                    if(eventLevel > categoryLevel){
                         category.level = event.level
+                    }
                 },
                 clearLogs: function(){
                     this.events = []
