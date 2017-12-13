@@ -15,5 +15,6 @@
     "background": {
       "scripts": ["background.js"]
     },
+    "icons": { "128": "icon128.png" },
     "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
   }

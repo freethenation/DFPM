@@ -1,4 +1,5 @@
 import 'file-loader?name=[name].[ext]!./manifest.json'
+import 'file-loader?name=[name].[ext]!./icon128.png'
 import {callJsonRpc, addJsonRpcListener} from './messaging'
 import {Model} from './model'
 
