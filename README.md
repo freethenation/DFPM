@@ -5,6 +5,20 @@ DFPM is a browser extension for detecting browser fingerprinting. You can instal
 
 Browser fingerprinting has gotten a lot of press over the last few years. The EFF and others have released tools ([panopticlick](https://panopticlick.eff.org/)) demonstrating it is possible but it is frustrating how few tools there are to actually identify companies using these techniques.
 
+## Running DFPM
+
+### Extension
+
+Install from the [Chrome Web Store]() or build it from source with `npm run build` and [install it manually](https://stackoverflow.com/questions/24577024/install-chrome-extension-not-in-the-store). Your devtools panel will now have a new tab, DFPM.
+
+### Command line
+
+DFPM includes a command line program that can connect to a running chrome or safari instance via [Chrome's debugger protocol](https://chromedevtools.github.io/devtools-protocol/). Run `dfpm -h` for more information.
+
+### Other environments
+
+I have ran DFPM in several environments and at scale. At its core, DFPM is a single script, `./dist/inject.js`, which must be ran before any other JS. I have found two good hooks in Chrome, [run_at:"document_start"](https://developer.chrome.com/extensions/content_scripts) and [scriptFirstStatement](https://chromedevtools.github.io/devtools-protocol/tot/Debugger/) (see `dfpm.js` for an example).
+
 ## Why do companies deploy browser fingerprinting?
 
 There are many motivations for companies to deploy browser fingerprinting with varying ethical implications:
@@ -34,20 +48,6 @@ If we attempt to login and fail they fingerprint us with [canvas](https://browse
 ![usage example screenshot](https://raw.githubusercontent.com/freethenation/DFPM/master/docs/example_db_login_after_attempt.png)
 
 There is a good argument for including fingerprinting on a login page. The additional information can be very useful in stopping bad actors. That being said, who knows if that is all they use the data for.
-
-## Running DFPM
-
-### Extension
-
-Install from the [Chrome Web Store]() or build it from source with `npm run build` and [install it manually](https://stackoverflow.com/questions/24577024/install-chrome-extension-not-in-the-store). Your devtools panel will now have a new tab, DFPM.
-
-### Command line
-
-DFPM includes a command line program that can connect to a running chrome or safari instance via [Chrome's debugger protocol](https://chromedevtools.github.io/devtools-protocol/). Run `dfpm -h` for more information.
-
-### Other environments
-
-I have ran DFPM in several environments and at scale. At its core, DFPM is a single script, `./dist/inject.js`, which must be ran before any other JS. I have found two good hooks in Chrome, [run_at:"document_start"](https://developer.chrome.com/extensions/content_scripts) and [scriptFirstStatement](https://chromedevtools.github.io/devtools-protocol/tot/Debugger/) (see `dfpm.js` for an example).
 
 ## Extending DFPM to detect additional fingerprinting techniques
 
