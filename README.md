@@ -9,7 +9,7 @@ Browser fingerprinting has gotten a lot of press over the last few years. The EF
 
 ### Extension
 
-Install from the [Chrome Web Store]() or build it from source with `npm run build` and [install it manually](https://stackoverflow.com/questions/24577024/install-chrome-extension-not-in-the-store). Your devtools panel will now have a new tab, DFPM.
+Install from the [Chrome Web Store](https://chrome.google.com/webstore/detail/dont-fingerprint-me/nhbedikkbkakbjipijipejfojanppbfg?hl=en) or build it from source with `npm run build` and [install it manually](https://stackoverflow.com/questions/24577024/install-chrome-extension-not-in-the-store). Your devtools panel will now have a new tab, DFPM.
 
 ### Command line
 
