@@ -23,11 +23,11 @@ I have ran DFPM in several environments and at scale. At its core, DFPM is a sin
 
 There are many motivations for companies to deploy browser fingerprinting with varying ethical implications:
 
-- **Tracking customers**: Companies use fingerprinting to track their customers/visitors around the web. This is the most frighting one and the least ethical reason to deploy fingerprinting.
+- **Tracking customers**: Companies use fingerprinting to track their customers/visitors around the web. This is the most frightening one and the least ethical reason to deploy fingerprinting.
 - **Anti password testing**: Browser fingerprinting gives companies additional ways to identify and block hackers.
 - **Anti web scraping**: Fingerprinting gives companies additional ways to "protect" their data. Web scraping is not illegal and it's common. It is often [deployed by large companies to hinder competitors and maintain market share](http://fortune.com/2017/05/10/amazon-bots/).
 
-My motivations for creating the tool are some combination of he scraping and tracking. My day job involves a lot of web scraping but personally I care a lot more about individual privacy.
+My motivations for creating the tool are some combination of the scraping and tracking. My day job involves a lot of web scraping but personally I care a lot more about individual privacy.
 
 ## DFPM Example: Dropbox
 
@@ -37,17 +37,17 @@ If we run DFPM on their [mobile marketing site](https://www.dropbox.com) with no
 
 ![usage example screenshot](https://raw.githubusercontent.com/freethenation/DFPM/master/docs/example_db_marketing.png)
 
-No one is scraping or hacking Dropbox's marketing site so hopefully the fingerprinting is just an oversite :(
+No one is scraping or hacking Dropbox's marketing site so hopefully the fingerprinting is just an oversight. :(
 
-If we run DFPM on their [login page](https://www.dropbox.com/login) they initially run no fingerprinting
+If we run DFPM on their [login page](https://www.dropbox.com/login) they initially run no fingerprinting.
 
 ![usage example screenshot](https://raw.githubusercontent.com/freethenation/DFPM/master/docs/example_db_login_before_attempt.png)
 
-If we attempt to login and fail they fingerprint us with [canvas](https://browserleaks.com/canvas) and [fonts](https://browserleaks.com/fonts)
+If we attempt to login and fail, they fingerprint us with [canvas](https://browserleaks.com/canvas) and [fonts](https://browserleaks.com/fonts).
 
 ![usage example screenshot](https://raw.githubusercontent.com/freethenation/DFPM/master/docs/example_db_login_after_attempt.png)
 
-There is a good argument for including fingerprinting on a login page. The additional information can be very useful in stopping bad actors. That being said, who knows if that is all they use the data for.
+There is a good argument for including fingerprinting on the login page. The additional information can be very useful in stopping bad actors. That said, there's no way to know if they also use the data for less user-friendly reasons.
 
 ## Extending DFPM to detect additional fingerprinting techniques
 
@@ -55,6 +55,6 @@ Adding the ability for DFPM to detect another fingerprinting technique is relati
 
 1. Create a new logger by copying `./src/loggers/example.js` to a new file in the loggers directory.
 2. Modify the newly copied file.
-3. Add your newly created logger to the list at the top of `./src/inject.js`
-4. Rebuild the app with `npm run build` and install your modified extension [manually](https://stackoverflow.com/questions/24577024/install-chrome-extension-not-in-the-store)
-5. If you think others can benefit from your modifications submit a pull request
+3. Add your newly created logger to the list at the top of `./src/inject.js`.
+4. Rebuild the app with `npm run build` and install your modified extension [manually](https://stackoverflow.com/questions/24577024/install-chrome-extension-not-in-the-store).
+5. If you think others can benefit from your modifications, please submit a pull request.
