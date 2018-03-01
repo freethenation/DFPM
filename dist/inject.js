@@ -1192,6 +1192,12 @@ function logger(self, emitter){
                 return ret;
             },
         });
+        if(self.clientInformation){
+            Reflect.defineProperty(self, 'clientInformation', {
+                get:function(){ return proxy },
+                set:function(val){ /* meh */ },
+            })
+        }
         Reflect.defineProperty(self, 'navigator', {
             get:function(){ return proxy },
             set:function(val){ /* meh */ },
