@@ -23,6 +23,29 @@ export function logger(self, emitter){
             set:function(val){ /* meh */ },
         })
     }
+
+    if(self.navigator.connection){
+        var origConn = self.navigator.connection
+        let proxyConn = new Proxy(self.navigator.connection, {
+            get: function(target, propertyKey, receiver){
+                emitter.emit('event', {
+                    method: 'get',
+                    path: `self.navigator.connection.${propertyKey}`,
+                    level: 'info',
+                    category: 'navigator',
+                })
+                var ret = origConn[propertyKey]
+                if(typeof(ret)=='function'){
+                    ret = ret.bind(origNavigator)
+                }
+                return ret;
+            }
+        })
+        Reflect.defineProperty(self.navigator, 'connection', {
+            get:function(){ return proxyConn },
+            set:function(val){ /* meh */ },
+        })
+    }
 }
 
 export const metadata = {
