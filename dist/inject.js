@@ -1216,7 +1216,7 @@ function logger(self, emitter){
                 })
                 var ret = origConn[propertyKey]
                 if(typeof(ret)=='function'){
-                    ret = ret.bind(origNavigator)
+                    ret = ret.bind(origConn)
                 }
                 return ret;
             }
