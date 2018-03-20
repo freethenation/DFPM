@@ -1748,7 +1748,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
  */
 
 /**
- * Instruments the window.navigator.getBattery & window.BatteryManager
+ * Instruments the window.navigator.getBattery & window.BatteryManager.
+ * In general this logger assumes checking the charging state is ok and checking any other state is fingerprinting
  * @param {Object} self the global JavaScript object. For example the browser's window object or the webworker's self object
  * @param {EventEmitter} emitter an event emitter that should be used to emit fingerprinting attempts.
  */
@@ -1783,8 +1784,14 @@ function logger(self, emitter) {
                 return Reflect.apply(target, thisArgument, args).then(function(battery){
                     return new Proxy(battery, {
                         get: function(target, propertyKey, receiver){
-                            if(propertyKey != 'then' && propertyKey != 'addEventListener'){
-                                emitEvent('self.navigator.getBattery.'+propertyKey, 'get', propertyKey=="charging"?'info':'warning')
+                            var level = ({
+                                'charging':'info',
+                                'removeEventListener':'info',
+                                'then':'none',
+                                'addEventListener':'none',
+                            })[propertyKey] || 'warning'
+                            if(level != 'none'){
+                                emitEvent('self.navigator.getBattery.'+propertyKey, 'get', level)
                             }
                             var ret = battery[propertyKey]
                             if(typeof(ret)=='function'){
@@ -1802,7 +1809,8 @@ function logger(self, emitter) {
         var fn = self.BatteryManager.prototype.addEventListener;
         self.BatteryManager.prototype.addEventListener = new Proxy(fn, {
             apply:function(target, thisArgument, args){
-                emitEvent(`self.BatteryManager.prototype.addEventListener("${args[0]}")`, 'apply', 'warning')
+                emitEvent(`self.BatteryManager.prototype.addEventListener("${args[0]}")`, 'apply',
+                    (args[0]+'').toLowerCase()=='chargingchange'?'info':'warning')
                 return Reflect.apply(target, thisArgument, args)
             }
         })
