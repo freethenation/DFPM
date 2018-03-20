@@ -10,6 +10,7 @@ import * as webrtcLogger from './loggers/webrtc';
 import * as audioLogger from './loggers/audio';
 import * as workerLogger from './loggers/worker';
 import * as fontLogger from './loggers/font';
+import * as batteryLogger from './loggers/battery';
 import {guid} from './util'
 
 
@@ -22,6 +23,7 @@ export const loggers = [
     audioLogger,
     workerLogger,
     fontLogger,
+    batteryLogger,
 ]
 
 //This script gets ran in every JS context BEFORE any other JS
