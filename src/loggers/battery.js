@@ -1,9 +1,3 @@
-/*******
- * This is an example logger module that simply logs all access to the browser's navigator object
- * A logger module should export a logger function and a metadata object.
- * It should not throw errors if ran on unexpected contexts (exp webworker)
- */
-
 /**
  * Instruments the window.navigator.getBattery & window.BatteryManager.
  * In general this logger assumes checking the charging state is ok and checking any other state is fingerprinting
