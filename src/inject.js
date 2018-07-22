@@ -11,7 +11,7 @@ import * as audioLogger from './loggers/audio';
 import * as workerLogger from './loggers/worker';
 import * as fontLogger from './loggers/font';
 import * as batteryLogger from './loggers/battery';
-import {guid} from './util'
+import {guid, getStackTrace} from './util'
 
 
 export const loggers = [
@@ -39,6 +39,7 @@ export default function dfpm(self){
         if(typeof(event) == "object"){
             event.jsContextId = dfpmId;
             event.url = self.location && self.location.toString()
+            event.stack = getStackTrace()
         }
         var msg = JSON.stringify(event)
         if(logDedupe[msg]) return;
@@ -101,9 +102,8 @@ export default function dfpm(self){
         doOverrideDocumentProto(root.prototype.getElementsByClassName, "getElementsByClassName");
         doOverrideDocumentProto(root.prototype.getElementsByTagName, "getElementsByTagName");
         doOverrideDocumentProto(root.prototype.getElementsByTagNameNS, "getElementsByTagNameNS");
-        doOverrideDocumentProto(root.prototype.getElementsByTagNameNS, "getElementsByTagNameNS");
-        doOverrideDocumentProto(root.prototype.getElementsByTagNameNS, "querySelector");
-        doOverrideDocumentProto(root.prototype.getElementsByTagNameNS, "querySelectorAll");
+        doOverrideDocumentProto(root.prototype.querySelector, "querySelector");
+        doOverrideDocumentProto(root.prototype.querySelectorAll, "querySelectorAll");
     }
     self.Document && overrideDocumentProto(self.Document);
 
