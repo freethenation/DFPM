@@ -78,7 +78,7 @@ export default function dfpm(self){
                     value: function () {
                         var element = old.apply(this, arguments);
                         if (element == null) {
-                            return null;
+                            return element;
                         }
                         if (Object.prototype.toString.call(element) === '[object HTMLCollection]' ||
                             Object.prototype.toString.call(element) === '[object NodeList]') {
@@ -101,6 +101,9 @@ export default function dfpm(self){
         doOverrideDocumentProto(root.prototype.getElementsByClassName, "getElementsByClassName");
         doOverrideDocumentProto(root.prototype.getElementsByTagName, "getElementsByTagName");
         doOverrideDocumentProto(root.prototype.getElementsByTagNameNS, "getElementsByTagNameNS");
+        doOverrideDocumentProto(root.prototype.getElementsByTagNameNS, "getElementsByTagNameNS");
+        doOverrideDocumentProto(root.prototype.getElementsByTagNameNS, "querySelector");
+        doOverrideDocumentProto(root.prototype.getElementsByTagNameNS, "querySelectorAll");
     }
     self.Document && overrideDocumentProto(self.Document);
 
