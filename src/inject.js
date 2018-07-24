@@ -59,14 +59,14 @@ export default function dfpm(self){
     //Iframes give you a clean JS context so we dirty them up lazyly
     //--------------------------------------------------
     //util function to dfpm iframes created in this manner
+    var iframeCache = new WeakMap()
     function inject(element) {
         if (element.tagName.toUpperCase() === "IFRAME" && element.contentWindow) {
+            if(iframeCache.has(element)) return; //some sites hit this code constantly and it is CPU intensive
+            iframeCache.set(element, true)
             try {
                 var hasAccess = element.contentWindow.HTMLCanvasElement;
-            } catch (e) {
-                console.log("can't access " + e);
-                return;
-            }
+            } catch (e) { return /* nothing we can do */ }
             dfpm(element.contentWindow);
         }
     }
