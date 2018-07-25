@@ -37,6 +37,6 @@ html, body {
 .height-100-percent {
     height: 100%;
 }
-.log-line a {
+.log-line .links {
     float: right;
 }

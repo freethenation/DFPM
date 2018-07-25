@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack",
     "watch": "webpack --watch",
-    "build-ext":"webpack; cd dist/ext; zip -r ../dfpm.zip  . *"
+    "build-ext": "webpack; cd dist/ext; zip -r ../dfpm.zip  . *"
   },
   "author": "",
   "license": "MIT",

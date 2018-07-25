@@ -18,19 +18,34 @@ function levelToClass(level){
     })[level] || ''
 }
 
+function getDomain(url){
+    if(!url) return ""
+    url = DOMAIN_REGEX.exec(url)
+    if(!url) return ""
+    return url[1].toLowerCase()
+}
+
 var DOMAIN_REGEX = /.*\:\/\/?([^\/]+)/
 Vue.component('log-line', {
     props: ['event'],
     template: `<li class="log-line" v-bind:class=" ['list-group-item', levelToClass(event.level)]">
-      <b>{{event.category}}</b> {{event.method}} {{event.path}} <a target="_blank" :href="event.url">{{shortUrl}}</a>
+      <b>{{event.category}}</b> {{event.method}} {{event.path}} <span class="links" :title="stackTrace"><span v-if="scriptDomain">from <a target="_blank" :href="scriptUrl">{{scriptDomain}}</a></span> on <a target="_blank" :href="event.url">{{pageDomain}}</a></span>
     </li>`,
     computed: {
-        shortUrl: function () {
-            var url = this.event.url
-            if(!url) return ""
-            url = DOMAIN_REGEX.exec(url)
-            if(!url) return ""
-            return url[1].toLowerCase()
+        pageDomain: function () {
+            return getDomain(this.event.url)
+        },
+        scriptUrl: function () {
+            var frame = this.event.stack[0]
+            return frame && frame.fileName || ""
+        },
+        scriptDomain: function(){
+            var frame = this.event.stack[0]
+            var url = frame && frame.fileName || ""
+            return getDomain(url)
+        },
+        stackTrace: function(){
+            return JSON.stringify(this.event.stack, null, 2)
         }
     },
     methods: {
