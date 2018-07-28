@@ -61,8 +61,8 @@ export default function dfpm(self){
     //util function to dfpm iframes created in this manner
     var iframeCache = new WeakMap()
     function inject(element) {
+        if(iframeCache.has(element)) return; //some sites hit this code constantly and it is CPU intensive
         if (element.tagName.toUpperCase() === "IFRAME" && element.contentWindow) {
-            if(iframeCache.has(element)) return; //some sites hit this code constantly and it is CPU intensive
             iframeCache.set(element, true)
             try {
                 var hasAccess = element.contentWindow.HTMLCanvasElement;
@@ -78,16 +78,14 @@ export default function dfpm(self){
                 {
                     value: function () {
                         var element = old.apply(this, arguments);
-                        if (element == null) {
-                            return element;
-                        }
-                        if (Object.prototype.toString.call(element) === '[object HTMLCollection]' ||
-                            Object.prototype.toString.call(element) === '[object NodeList]') {
+                        if (!element) return element;
+                        var eleType = Object.prototype.toString.call(element)
+                        if(eleType == "[object HTMLCollection]" || eleType == "[object NodeList]"){
                             for (var i = 0; i < element.length; ++i) {
-                                var el = element[i];
-                                inject(el);
+                                var ele = element[i]
+                                if(Object.prototype.toString.call(ele)=="[object HTMLIFrameElement]") inject(ele);
                             }
-                        } else {
+                        } else if (eleType == "[object HTMLIFrameElement]"){
                             inject(element);
                         }
                         return element;
