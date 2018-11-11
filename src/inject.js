@@ -36,14 +36,15 @@ export default function dfpm(self){
 
     var logDedupe = {}
     function log(event){
+        var msg = JSON.stringify(event)
+        if(logDedupe[msg]) return;
+        logDedupe[msg] = true;
         if(typeof(event) == "object"){
             event.jsContextId = dfpmId;
             event.url = self.location && self.location.toString()
             event.stack = getStackTrace()
         }
-        var msg = JSON.stringify(event)
-        if(logDedupe[msg]) return;
-        logDedupe[msg] = true;
+        msg = JSON.stringify(event)
         dfpm.emitEvent(msg)
     }
 

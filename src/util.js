@@ -1,3 +1,5 @@
+import { logger } from "./loggers/screen";
+
 //just a bunch of utility functions
 
 export function guid() {
@@ -9,10 +11,14 @@ export function guid() {
 
 var myError = Error //Some sites override error... copy it off XXX: In general need a better approach to issues like this
 export function getStackTrace(Error, error){
-    error = error || new myError()
-    var stack = parseV8OrIE(error)
-    var index = stack.findIndex((frame)=>frame.fileName && frame.fileName.indexOf('http')!==-1)
-    return stack.slice(index)
+    try{
+        error = error || new myError()
+        var stack = parseV8OrIE(error)
+        var index = stack.findIndex((frame)=>frame.fileName && frame.fileName.indexOf('http')!==-1)
+        return stack.slice(index)
+    } catch(err){
+        return null
+    }
 }
 
 //Taken from stacktrace.js

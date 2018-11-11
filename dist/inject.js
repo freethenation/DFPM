@@ -61,7 +61,7 @@ window["dfpm"] =
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -70,13 +70,53 @@ window["dfpm"] =
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony export (immutable) */ __webpack_exports__["logger"] = logger;
+//This file adds the ability to log window.screen access
+
+function logger(self, emitter){
+    if(self.screen){
+        let proxy = new Proxy(self.screen, {
+            get: function(target, propertyKey, receiver){
+                emitter.emit('event', {
+                    method: 'get',
+                    path: `self.screen.${propertyKey}`,
+                    level: 'info',
+                    category: 'screen',
+                })
+                return Reflect.get(target, propertyKey, target)
+            }
+        });
+        Reflect.defineProperty(self, 'screen', {
+            get:function(){ return proxy },
+            set:function(val){ /* meh */ },
+        })
+    }
+}
+
+const metadata = {
+    category:"screen",
+    icon:"fa-desktop",
+    title:"Screen Properties",
+    desc:"Screen resolution & color depth provide a few more bits of identifying information.",
+    moreInfo:"https://browserleaks.com/javascript",
+    priority:5,
+}
+/* harmony export (immutable) */ __webpack_exports__["metadata"] = metadata;
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (immutable) */ __webpack_exports__["default"] = dfpm;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_eventemitter2__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_eventemitter2__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_eventemitter2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_eventemitter2__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__loggers_navigator__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__loggers_canvas__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__loggers_webgl__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__loggers_screen__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__loggers_navigator__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__loggers_canvas__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__loggers_webgl__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__loggers_screen__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__loggers_webrtc__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__loggers_audio__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__loggers_worker__ = __webpack_require__(9);
@@ -123,14 +163,15 @@ function dfpm(self){
 
     var logDedupe = {}
     function log(event){
+        var msg = JSON.stringify(event)
+        if(logDedupe[msg]) return;
+        logDedupe[msg] = true;
         if(typeof(event) == "object"){
             event.jsContextId = dfpmId;
             event.url = self.location && self.location.toString()
             event.stack = Object(__WEBPACK_IMPORTED_MODULE_10__util__["a" /* getStackTrace */])()
         }
-        var msg = JSON.stringify(event)
-        if(logDedupe[msg]) return;
-        logDedupe[msg] = true;
+        msg = JSON.stringify(event)
         dfpm.emitEvent(msg)
     }
 
@@ -196,7 +237,7 @@ function dfpm(self){
 dfpm.emitEvent = console.log
 
 /***/ }),
-/* 1 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process) {var __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -977,10 +1018,10 @@ dfpm.emitEvent = console.log
   }
 }();
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -1170,7 +1211,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1244,7 +1285,7 @@ const metadata = {
 
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1314,7 +1355,7 @@ const metadata = {
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1434,46 +1475,6 @@ const metadata = {
     desc:"Draws a hidden image which varies depending on OS and hardware.",
     moreInfo:"https://browserleaks.com/webgl",
     priority:1,
-}
-/* harmony export (immutable) */ __webpack_exports__["metadata"] = metadata;
-
-
-/***/ }),
-/* 6 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (immutable) */ __webpack_exports__["logger"] = logger;
-//This file adds the ability to log window.screen access
-
-function logger(self, emitter){
-    if(self.screen){
-        let proxy = new Proxy(self.screen, {
-            get: function(target, propertyKey, receiver){
-                emitter.emit('event', {
-                    method: 'get',
-                    path: `self.screen.${propertyKey}`,
-                    level: 'info',
-                    category: 'screen',
-                })
-                return Reflect.get(target, propertyKey, target)
-            }
-        });
-        Reflect.defineProperty(self, 'screen', {
-            get:function(){ return proxy },
-            set:function(val){ /* meh */ },
-        })
-    }
-}
-
-const metadata = {
-    category:"screen",
-    icon:"fa-desktop",
-    title:"Screen Properties",
-    desc:"Screen resolution & color depth provide a few more bits of identifying information.",
-    moreInfo:"https://browserleaks.com/javascript",
-    priority:5,
 }
 /* harmony export (immutable) */ __webpack_exports__["metadata"] = metadata;
 
@@ -1839,6 +1840,9 @@ const metadata = {
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["b"] = guid;
 /* harmony export (immutable) */ __webpack_exports__["a"] = getStackTrace;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__loggers_screen__ = __webpack_require__(0);
+
+
 //just a bunch of utility functions
 
 function guid() {
@@ -1850,10 +1854,14 @@ function guid() {
 
 var myError = Error //Some sites override error... copy it off XXX: In general need a better approach to issues like this
 function getStackTrace(Error, error){
-    error = error || new myError()
-    var stack = parseV8OrIE(error)
-    var index = stack.findIndex((frame)=>frame.fileName && frame.fileName.indexOf('http')!==-1)
-    return stack.slice(index)
+    try{
+        error = error || new myError()
+        var stack = parseV8OrIE(error)
+        var index = stack.findIndex((frame)=>frame.fileName && frame.fileName.indexOf('http')!==-1)
+        return stack.slice(index)
+    } catch(err){
+        return null
+    }
 }
 
 //Taken from stacktrace.js
