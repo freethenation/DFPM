@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "Don't FingerPrint Me",
     "short_name": "DFPM",
-    "version": "1.16",
+    "version": "1.17",
     "description": "A browser devtools extension for detecting browser fingerprinting.",
     "content_scripts": [{
       "matches": ["<all_urls>"],
