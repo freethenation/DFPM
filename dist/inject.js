@@ -199,37 +199,39 @@ function dfpm(self){
         }
     }
     //overrideDocumentProto so you can't get a clean iframe
-    //ref https://blog.javascripting.com/2014/05/19/wrapping-the-dom-window-object/
-    function overrideDocumentProto(document) {
+    function overrideDocumentProto(root) {
         function doOverrideDocumentProto(old, name) {
-            function value() {
-                var element = old.apply(document, arguments);
-                if (!element) return element;
-                var eleType = Object.prototype.toString.call(element)
-                if(eleType == "[object HTMLCollection]" || eleType == "[object NodeList]"){
-                    for (var i = 0; i < element.length; ++i) {
-                        var ele = element[i]
-                        if(Object.prototype.toString.call(ele)=="[object HTMLIFrameElement]") inject(ele);
+            //root.prototype[storedObjectPrefix + name] = old;
+            Object.defineProperty(root.prototype, name,
+                {
+                    value: function () {
+                        var element = old.apply(this, arguments);
+                        if (!element) return element;
+                        var eleType = Object.prototype.toString.call(element)
+                        if(eleType == "[object HTMLCollection]" || eleType == "[object NodeList]"){
+                            for (var i = 0; i < element.length; ++i) {
+                                var ele = element[i]
+                                if(Object.prototype.toString.call(ele)=="[object HTMLIFrameElement]") inject(ele);
+                            }
+                        } else if (eleType == "[object HTMLIFrameElement]"){
+                            inject(element);
+                        }
+                        return element;
                     }
-                } else if (eleType == "[object HTMLIFrameElement]"){
-                    inject(element);
                 }
-                return element;
-            }
-            value.toString = old.toString.bind(old)
-            Object.defineProperty(document.__proto__, name, {value});
+            );
         }
-        doOverrideDocumentProto(document.__proto__.createElement, "createElement");
-        doOverrideDocumentProto(document.__proto__.createElementNS, "createElementNS");
-        doOverrideDocumentProto(document.__proto__.getElementById, "getElementById");
-        doOverrideDocumentProto(document.__proto__.getElementsByName, "getElementsByName");
-        doOverrideDocumentProto(document.__proto__.getElementsByClassName, "getElementsByClassName");
-        doOverrideDocumentProto(document.__proto__.getElementsByTagName, "getElementsByTagName");
-        doOverrideDocumentProto(document.__proto__.getElementsByTagNameNS, "getElementsByTagNameNS");
-        doOverrideDocumentProto(document.__proto__.querySelector, "querySelector");
-        doOverrideDocumentProto(document.__proto__.querySelectorAll, "querySelectorAll");
+        doOverrideDocumentProto(root.prototype.createElement, "createElement");
+        doOverrideDocumentProto(root.prototype.createElementNS, "createElementNS");
+        doOverrideDocumentProto(root.prototype.getElementById, "getElementById");
+        doOverrideDocumentProto(root.prototype.getElementsByName, "getElementsByName");
+        doOverrideDocumentProto(root.prototype.getElementsByClassName, "getElementsByClassName");
+        doOverrideDocumentProto(root.prototype.getElementsByTagName, "getElementsByTagName");
+        doOverrideDocumentProto(root.prototype.getElementsByTagNameNS, "getElementsByTagNameNS");
+        doOverrideDocumentProto(root.prototype.querySelector, "querySelector");
+        doOverrideDocumentProto(root.prototype.querySelectorAll, "querySelectorAll");
     }
-    self.Document && overrideDocumentProto(self.document);
+    self.Document && overrideDocumentProto(self.Document);
 
 }
 dfpm.emitEvent = console.log
