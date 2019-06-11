@@ -75,24 +75,22 @@ export default function dfpm(self){
     function overrideDocumentProto(root) {
         function doOverrideDocumentProto(old, name) {
             //root.prototype[storedObjectPrefix + name] = old;
-            Object.defineProperty(root.prototype, name,
-                {
-                    value: function () {
-                        var element = old.apply(this, arguments);
-                        if (!element) return element;
-                        var eleType = Object.prototype.toString.call(element)
-                        if(eleType == "[object HTMLCollection]" || eleType == "[object NodeList]"){
-                            for (var i = 0; i < element.length; ++i) {
-                                var ele = element[i]
-                                if(Object.prototype.toString.call(ele)=="[object HTMLIFrameElement]") inject(ele);
-                            }
-                        } else if (eleType == "[object HTMLIFrameElement]"){
-                            inject(element);
-                        }
-                        return element;
+            var value = function () {
+                var element = old.apply(this, arguments);
+                if (!element) return element;
+                var eleType = Object.prototype.toString.call(element)
+                if(eleType == "[object HTMLCollection]" || eleType == "[object NodeList]"){
+                    for (var i = 0; i < element.length; ++i) {
+                        var ele = element[i]
+                        if(Object.prototype.toString.call(ele)=="[object HTMLIFrameElement]") inject(ele);
                     }
+                } else if (eleType == "[object HTMLIFrameElement]"){
+                    inject(element);
                 }
-            );
+                return element;
+            }
+            value.toString = old.toString.bind(old)
+            Object.defineProperty(root.prototype, name, { value });
         }
         doOverrideDocumentProto(root.prototype.createElement, "createElement");
         doOverrideDocumentProto(root.prototype.createElementNS, "createElementNS");
